@@ -10,7 +10,8 @@ const preview = ref<string | null>(null)
 
 onMounted(async () => {
   preview.value =
-    video.preview?.url ?? (await videoStore.get(video.documentId)).preview?.url ?? null
+    import.meta.env.VITE_API_BASE +
+    (video.preview?.url ?? (await videoStore.get(video.documentId)).preview?.url ?? null)
 })
 </script>
 

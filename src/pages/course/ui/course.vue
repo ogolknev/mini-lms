@@ -8,6 +8,7 @@ const route = useRoute()
 const courseStore = useCourseStore()
 
 const course = ref<Course | null>(null)
+const baseApi = import.meta.env.VITE_API_BASE
 const videos = computed(() => {
   return course.value?.videos?.slice().sort((v1, v2) => v1.order - v2.order)
 })
@@ -19,7 +20,10 @@ onMounted(async () => {
 
 <template>
   <div class="relative space-y-5">
-    <UAvatar :src="course?.preview?.url" class="size-auto aspect-video w-full rounded-lg mb-5" />
+    <UAvatar
+      :src="baseApi + course?.preview?.url"
+      class="size-auto aspect-video w-full rounded-lg mb-5"
+    />
 
     <div class="flex justify-between gap-2">
       <h2 class="text-xl md:text-2xl font-bold">{{ course?.title }}</h2>
