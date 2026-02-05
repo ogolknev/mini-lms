@@ -1,3 +1,5 @@
 export interface Media {
-  url: string;
+  url: string
+  mime: string
+  name: string
 }

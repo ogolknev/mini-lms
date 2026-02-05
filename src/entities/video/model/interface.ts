@@ -9,4 +9,5 @@ export interface Video {
   course?: Course
   preview?: Media
   order: number
+  attachments?: Media[]
 }

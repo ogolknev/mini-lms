@@ -23,7 +23,7 @@ export const useVideoStore = defineStore('video', () => {
   }
 
   async function get(id: string) {
-    const video = videoMap.value.get(id) ?? (await getVideo(id))
+    const video = await getVideo(id)
 
     videoMap.value.set(video.documentId, video)
 
