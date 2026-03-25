@@ -1,0 +1,15 @@
+{
+  "name": "online-school-monorepo",
+  "private": true,
+  "packageManager": "pnpm@10.30.3",
+  "scripts": {
+    "dev": "pnpm -r --parallel --filter web --filter cms dev",
+    "dev:web": "pnpm --filter web dev",
+    "dev:cms": "pnpm --filter cms dev",
+    "build": "pnpm -r --filter web --filter cms build",
+    "build:web": "pnpm --filter web build",
+    "build:cms": "pnpm --filter cms build",
+    "test:web": "pnpm --filter web test:unit",
+    "lint:web": "pnpm --filter web lint"
+  }
+}
