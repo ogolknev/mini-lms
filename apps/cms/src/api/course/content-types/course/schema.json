@@ -25,17 +25,17 @@
         "images"
       ]
     },
-    "videos": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::video.video",
-      "mappedBy": "course"
-    },
-    "students": {
+    "enrolled_users": {
       "type": "relation",
       "relation": "manyToMany",
-      "target": "api::student.student",
-      "mappedBy": "courses"
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "courses"
+    },
+    "lessons": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::lesson.lesson",
+      "mappedBy": "course"
     }
   }
 }

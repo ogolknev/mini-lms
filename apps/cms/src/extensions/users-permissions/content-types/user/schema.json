@@ -66,11 +66,15 @@
       "inversedBy": "users",
       "configurable": false
     },
-    "student": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "courses": {
       "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::student.student",
-      "mappedBy": "user"
+      "relation": "manyToMany",
+      "target": "api::course.course",
+      "mappedBy": "enrolled_users"
     }
   }
 }
