@@ -1,3 +1,6 @@
+# Dependencies
+node_modules
+
 # Logs
 logs
 *.log
@@ -5,31 +8,39 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-lerna-debug.log*
 
-node_modules
-.DS_Store
+# Environment
+.env
+*.local
+
+# Build output and caches
 dist
 dist-ssr
+build
 coverage
-*.local
-.env
+.cache
+.tmp
+.eslintcache
+*.tsbuildinfo
 
-/cypress/videos/
-/cypress/screenshots/
-
-# Editor directories and files
+# Editor and OS files
+.DS_Store
 .vscode/*
 !.vscode/extensions.json
 .idea
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
 *.sw?
 
-*.tsbuildinfo
+# Strapi
+.strapi
+.strapi-updater.json
+.strapi-cloud.json
+*.sql
+*.sqlite
+*.sqlite3
+apps/cms/exports
+apps/cms/public/uploads/*
+!apps/cms/public/uploads/.gitkeep
 
-# Auto-generated type declarations
+# Auto-generated Vue type declarations
 auto-imports.d.ts
 components.d.ts
