@@ -1,4 +1,4 @@
-import {type Student} from '@/entities/student/@x/user'
+import type { Course } from "@/entities/course/@x/user";
 
 export interface User {
   documentId: string;
@@ -10,5 +10,6 @@ export interface User {
   blocked: boolean;
   createdAt: string;
   updatedAt: string;
-  student?: Student;
+  name?: string;
+  courses?: Course[];
 }

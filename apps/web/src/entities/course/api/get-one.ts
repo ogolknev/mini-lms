@@ -1,9 +1,9 @@
 import { apiClient } from '@/shared/api'
-import type { Course } from '../@x/video'
+import type { Course } from '..'
 
 export async function getCourse(id: string) {
   const query = {
-    populate: ['videos.preview', 'preview'],
+    populate: ['lessons.preview', 'preview'],
   }
 
   const response = await apiClient.fetch(`/api/courses/${id}`, { query })

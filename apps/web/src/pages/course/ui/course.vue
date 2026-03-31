@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useCourseStore, type Course } from '@/entities/course'
-import { VideoThumbnail } from '@/entities/video'
+import { LessonThumbnail } from '@/entities/lesson'
 import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
@@ -9,8 +9,8 @@ const courseStore = useCourseStore()
 
 const course = ref<Course | null>(null)
 const baseApi = import.meta.env.VITE_API_BASE
-const videos = computed(() => {
-  return course.value?.videos?.slice().sort((v1, v2) => v1.order - v2.order)
+const lessons = computed(() => {
+  return course.value?.lessons?.slice().sort((l1, l2) => l1.position - l2.position)
 })
 
 onMounted(async () => {
@@ -37,12 +37,12 @@ onMounted(async () => {
 
         <template #body>
           <div class="space-y-5">
-            <VideoThumbnail
-              v-for="video in videos"
-              :key="video.documentId"
-              :video
+            <LessonThumbnail
+              v-for="lesson in lessons"
+              :key="lesson.documentId"
+              :lesson
               class="transition-transform hover:scale-102 cursor-pointer"
-              @click="$router.push(`/videos/${video.documentId}`)"
+              @click="$router.push(`/lessons/${lesson.documentId}`)"
             />
           </div>
         </template>

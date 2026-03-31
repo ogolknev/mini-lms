@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { CourseThumbnail, useCourseStore } from '@/entities/course'
-import { VideoThumbnail } from '@/entities/video'
-import { useVideoStore } from '@/entities/video'
+import { LessonThumbnail } from '@/entities/lesson'
+import { useLessonStore } from '@/entities/lesson'
 import { onMounted } from 'vue'
 
-const videoStore = useVideoStore()
+const lessonStore = useLessonStore()
 const courseStore = useCourseStore()
 
 onMounted(async () => {
-  await videoStore.update()
+  await lessonStore.update()
   await courseStore.update()
 })
 
@@ -46,12 +46,12 @@ function disableHorizontalScroll(event: MouseEvent) {
         @mouseenter="enableHorizontalScroll"
         @mouseleave="disableHorizontalScroll"
       >
-        <VideoThumbnail
-          v-for="video in videoStore.videos"
-          :key="video.documentId"
-          :video
+        <LessonThumbnail
+          v-for="lesson in lessonStore.lessons"
+          :key="lesson.documentId"
+          :lesson
           class="w-60 transition-transform hover:scale-105 cursor-pointer shrink-0"
-          @click="$router.push({ path: `/videos/${video.documentId}` })"
+          @click="$router.push({ path: `/lessons/${lesson.documentId}` })"
         />
       </div>
     </div>

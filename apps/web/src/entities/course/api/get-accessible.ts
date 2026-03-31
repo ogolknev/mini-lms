@@ -4,12 +4,8 @@ import { apiClient } from '@/shared/api'
 export async function getAccessibleCourses() {
   const query = {
     populate: {
-      student: {
-        populate: {
-          courses: {
-            populate: ['videos', 'preview'],
-          },
-        },
+      courses: {
+        populate: ['lessons', 'preview'],
       },
     },
   }
@@ -17,5 +13,5 @@ export async function getAccessibleCourses() {
 
   const profile: User = response.data
 
-  return profile.student?.courses ?? []
+  return profile.courses ?? []
 }

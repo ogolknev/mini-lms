@@ -1,12 +1,12 @@
-import { type Video } from '@/entities/video/@x/course';
-import { type Student } from '@/entities/student/@x/course';
+import type { Lesson } from '@/entities/lesson/@x/course';
 import { type Media } from '@/entities/media/@x/course';
+import type { User } from '@/entities/user/@x/course';
 
 export interface Course {
   documentId: string;
   title: string;
   description: string;
-  videos?: Video[];
-  students?: Student[];
+  lessons?: Lesson[];
+  enrolled_users?: User[];
   preview?: Media;
 }

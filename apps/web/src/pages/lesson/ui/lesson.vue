@@ -1,15 +1,17 @@
 <script setup lang="ts">
-import { useVideoStore, type Video } from '@/entities/video'
-import { computed, onMounted, ref } from 'vue'
+import { useLessonStore, type Lesson } from '@/entities/lesson'
+import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
+import MarkdownIt from 'markdown-it'
+import DOMPurify from 'dompurify'
 
-const videoStore = useVideoStore()
+const lessonStore = useLessonStore()
 const route = useRoute()
 
-const video = ref<Video>()
-const url = computed(() => video.value?.url?.replace('video/private', 'play/embed'))
+const lesson = ref<Lesson>()
+const lessonContent = ref('')
 
-function getDownloadUrl(attachment: NonNullable<Video['attachments']>[number]) {
+function getDownloadUrl(attachment: NonNullable<Lesson['attachments']>[number]) {
   return import.meta.env.VITE_API_BASE + attachment.url
 }
 
@@ -21,15 +23,25 @@ function getIconFromMime(mime: string) {
 }
 
 onMounted(async () => {
-  video.value = await videoStore.get(route.params.id as string)
+  lesson.value = await lessonStore.get(route.params.id as string)
+
+  const mdRenderer = new MarkdownIt({
+    html: false,
+    linkify: true,
+    breaks: true,
+  })
+
+  const unsafeHtml = mdRenderer.render(lesson.value?.content || '')
+  lessonContent.value = DOMPurify.sanitize(unsafeHtml)
 })
 </script>
 
 <template>
   <div class="space-y-5">
     <iframe
+      v-if="lesson?.heroSrcType === 'url'"
       class="size-auto rounded-lg w-full aspect-video"
-      :src="url"
+      :src="lesson.heroUrl?.replace('video/private', 'play/embed')"
       frameBorder="0"
       allow="clipboard-write; autoplay"
       webkitAllowFullScreen
@@ -39,19 +51,19 @@ onMounted(async () => {
 
     <div class="space-y-5">
       <div class="flex justify-between">
-        <h3 class="text-xl md:text-2xl">{{ video?.title }}</h3>
+        <h3 class="text-xl md:text-2xl">{{ lesson?.title }}</h3>
         <ULink
           class="text-neutral-500"
-          @click="$router.push(`/courses/${video?.course?.documentId}`)"
+          @click="$router.push(`/courses/${lesson?.course?.documentId}`)"
           >ПЕРЕЙТИ К КУРСУ</ULink
         >
       </div>
 
-      <div v-if="video?.attachments">
+      <div v-if="lesson?.attachments">
         <h4 class="text-lg md:text-xl mb-2">Материалы урока</h4>
 
         <div class="space-y-2 ml-2">
-          <div v-for="attachment in video.attachments" :key="attachment.name" class="flex gap-2">
+          <div v-for="attachment in lesson.attachments" :key="attachment.name" class="flex gap-2">
             <UIcon :name="getIconFromMime(attachment.mime)" class="size-5 text-neutral-400"></UIcon>
 
             <a
@@ -67,7 +79,11 @@ onMounted(async () => {
 
       <USeparator />
 
-      <p>{{ video?.description }}</p>
+      <p>{{ lesson?.description }}</p>
+
+      <USeparator />
+
+      <div v-html="lessonContent" class="prose prose-neutral dark:prose-invert max-w-none"></div>
     </div>
   </div>
 </template>

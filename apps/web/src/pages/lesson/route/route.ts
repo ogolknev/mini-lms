@@ -1,7 +1,7 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { VideoPage } from '..'
+import { LessonPage } from '..'
 
 export default <RouteRecordRaw>{
-  path: '/videos/:id',
-  component: VideoPage,
+  path: '/lessons/:id',
+  component: LessonPage,
 }

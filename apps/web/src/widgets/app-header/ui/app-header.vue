@@ -36,7 +36,7 @@ function onLogout() {
 
       <template #content>
         <div class="p-5 flex flex-col gap-5">
-          {{ profileStore.profile?.student?.name }}
+          {{ profileStore.profile?.name }}
 
           <UButton label="Выйти" icon="lucide:log-out" @click="onLogout" />
         </div>
