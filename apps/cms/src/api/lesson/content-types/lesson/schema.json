@@ -1,0 +1,80 @@
+{
+  "kind": "collectionType",
+  "collectionName": "lessons",
+  "info": {
+    "singularName": "lesson",
+    "pluralName": "lessons",
+    "displayName": "Lesson"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "preview": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "position": {
+      "type": "integer",
+      "required": false,
+      "unique": false,
+      "min": 0
+    },
+    "heroSrcType": {
+      "type": "enumeration",
+      "private": true,
+      "required": true,
+      "default": "none",
+      "enum": [
+        "none",
+        "url",
+        "embed"
+      ]
+    },
+    "heroUrl": {
+      "type": "string",
+      "private": true,
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "heroSrcType"
+            },
+            "url"
+          ]
+        }
+      }
+    },
+    "course": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::course.course",
+      "inversedBy": "lessons"
+    },
+    "attachments": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "content": {
+      "type": "richtext",
+      "private": true
+    }
+  }
+}

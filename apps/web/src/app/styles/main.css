@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+@import 'tailwindcss';
+@plugin "@tailwindcss/typography";
+@import '@nuxt/ui';
+
+@theme {
+  --font-fancy: 'Great Vibes', serif;
+}
+
+@utility scrollbar-hidden {
+  -ms-overflow-style: none; /* IE и Edge */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+}

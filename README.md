@@ -1,45 +1,75 @@
-# web
+# online-school monorepo
 
-This template should help get you started developing with Vue 3 in Vite.
+## Overview
 
-## Recommended IDE Setup
+This repository contains the online school platform as a pnpm monorepo with two apps:
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+- `apps/web` - the client-facing Vue 3 and Vite application
+- `apps/cms` - the Strapi CMS that manages courses, lessons, users, and access rules
 
-## Type Support for `.vue` Imports in TS
+## Requirements
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+- Node.js `>=18 <=22`
+- pnpm `10.x`
 
-## Customize configuration
+## Environment
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+Copy the example files before running the apps:
 
-## Project Setup
+```bash
+cp apps/web/.env.example apps/web/.env
+cp apps/cms/.env.example apps/cms/.env
+```
 
-```sh
+The web app currently expects:
+
+- `VITE_API_BASE`
+
+The CMS example includes the local server settings and Strapi secrets required to boot the app.
+
+## Run and Build
+
+Install dependencies from the repository root:
+
+```bash
 pnpm install
 ```
 
-### Compile and Hot-Reload for Development
+Start both apps together:
 
-```sh
+```bash
 pnpm dev
 ```
 
-### Type-Check, Compile and Minify for Production
+Build both apps:
 
-```sh
+```bash
 pnpm build
 ```
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+Use the root commands when you want to work with the whole stack. Use app-specific commands when you only need one app.
 
-```sh
-pnpm test:unit
+## Useful Commands
+
+Run only the frontend:
+
+```bash
+pnpm dev:web
+pnpm build:web
+pnpm test:web
+pnpm lint:web
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+Run only the CMS:
 
-```sh
-pnpm lint
+```bash
+pnpm dev:cms
+pnpm build:cms
+```
+
+You can also run commands directly with pnpm filters:
+
+```bash
+pnpm --filter web dev
+pnpm --filter cms dev
 ```
