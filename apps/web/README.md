@@ -2,7 +2,7 @@
 
 ## Overview
 
-`apps/web` is the client-facing Vue 3 application for the online school platform. It uses Vite, Vue Router, Pinia, and Nuxt UI to render the authenticated learning flow around courses and lessons.
+`apps/web` is the client-facing Vue 3 application for `mini-lms`. It uses Vite, Vue Router, Pinia, and Nuxt UI to render the authenticated learning flow around courses and lessons.
 
 ## Requirements
 

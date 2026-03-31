@@ -2,7 +2,7 @@
 
 ## Overview
 
-`apps/cms` is the Strapi application that powers the online school backend. It stores courses, lessons, uploads, user enrollment data, and the lesson access rules consumed by the web app.
+`apps/cms` is the Strapi application that powers the `mini-lms` backend. It stores courses, lessons, uploads, user enrollment data, and the lesson access rules consumed by the web app.
 
 ## Requirements
 

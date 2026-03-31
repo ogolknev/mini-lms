@@ -1,5 +1,5 @@
 {
-  "name": "online-school-monorepo",
+  "name": "mini-lms",
   "private": true,
   "packageManager": "pnpm@10.30.3",
   "scripts": {

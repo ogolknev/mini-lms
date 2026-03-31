@@ -1,8 +1,8 @@
-# online-school monorepo
+# mini-lms
 
 ## Overview
 
-This repository contains the online school platform as a pnpm monorepo with two apps:
+This repository contains the `mini-lms` pnpm monorepo with two apps:
 
 - `apps/web` - the client-facing Vue 3 and Vite application
 - `apps/cms` - the Strapi CMS that manages courses, lessons, users, and access rules
