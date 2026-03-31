@@ -38,6 +38,8 @@ coverage
 *.sqlite
 *.sqlite3
 apps/cms/exports
+apps/cms/src/extensions/documentation/documentation/
+apps/cms/types/generated/
 apps/cms/public/uploads/*
 !apps/cms/public/uploads/.gitkeep
 
