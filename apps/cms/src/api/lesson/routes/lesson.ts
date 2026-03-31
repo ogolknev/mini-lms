@@ -18,7 +18,7 @@ const customRoutes = [
   {
     method: 'GET',
     path: '/lessons/my/:id',
-    handler: 'lesson.findOne',
+    handler: 'lesson.findMyOne',
     config: {
       middlewares: ['api::lesson.ensure-my-lesson-access'],
     },

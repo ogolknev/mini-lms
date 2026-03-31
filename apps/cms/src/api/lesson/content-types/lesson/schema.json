@@ -11,7 +11,7 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "name": {
+    "title": {
       "type": "string",
       "required": true
     },
@@ -30,10 +30,6 @@
       "required": false,
       "unique": false,
       "min": 0
-    },
-    "content": {
-      "type": "blocks",
-      "private": true
     },
     "heroSrcType": {
       "type": "enumeration",
@@ -58,14 +54,27 @@
             "url"
           ]
         }
-      },
-      "regex": "^https:\\/\\/rutube\\.ru\\/video\\/private\\/[a-f0-9]{32}\\/?(?:\\?p=[A-Za-z0-9_-]+)?$"
+      }
     },
     "course": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::course.course",
       "inversedBy": "lessons"
+    },
+    "attachments": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "content": {
+      "type": "richtext",
+      "private": true
     }
   }
 }

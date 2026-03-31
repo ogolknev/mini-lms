@@ -423,7 +423,8 @@ export interface ApiLessonLesson extends Struct.CollectionTypeSchema {
     draftAndPublish: true
   }
   attributes: {
-    content: Schema.Attribute.Blocks & Schema.Attribute.Private
+    attachments: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios', true>
+    content: Schema.Attribute.RichText & Schema.Attribute.Private
     course: Schema.Attribute.Relation<'manyToOne', 'api::course.course'>
     createdAt: Schema.Attribute.DateTime
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private
@@ -436,7 +437,6 @@ export interface ApiLessonLesson extends Struct.CollectionTypeSchema {
     locale: Schema.Attribute.String & Schema.Attribute.Private
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::lesson.lesson'> &
       Schema.Attribute.Private
-    name: Schema.Attribute.String & Schema.Attribute.Required
     position: Schema.Attribute.Integer &
       Schema.Attribute.SetMinMax<
         {
@@ -446,6 +446,7 @@ export interface ApiLessonLesson extends Struct.CollectionTypeSchema {
       >
     preview: Schema.Attribute.Media<'images'>
     publishedAt: Schema.Attribute.DateTime
+    title: Schema.Attribute.String & Schema.Attribute.Required
     updatedAt: Schema.Attribute.DateTime
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private
   }
