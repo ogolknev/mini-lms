@@ -1,45 +1,61 @@
 # web
 
-This template should help get you started developing with Vue 3 in Vite.
+## Overview
 
-## Recommended IDE Setup
+`apps/web` is the client-facing Vue 3 application for the online school platform. It uses Vite, Vue Router, Pinia, and Nuxt UI to render the authenticated learning flow around courses and lessons.
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## Requirements
 
-## Type Support for `.vue` Imports in TS
+- Node.js `>=18 <=22`
+- pnpm `10.x`
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+## Environment
 
-## Customize configuration
+Create a local env file before starting the app:
 
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
-pnpm install
+```bash
+cp .env.example .env
 ```
 
-### Compile and Hot-Reload for Development
+Required variables:
 
-```sh
+- `VITE_API_BASE` - base URL for the CMS API, for example `http://localhost:1337`
+
+## Run and Build
+
+From `apps/web`:
+
+```bash
 pnpm dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
 pnpm build
+pnpm build-only
+pnpm preview
 ```
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+From the repository root:
 
-```sh
+```bash
+pnpm --filter web dev
+pnpm --filter web build
+```
+
+## Useful Commands
+
+```bash
+pnpm type-check
 pnpm test:unit
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
 pnpm lint
+pnpm lint:eslint
+pnpm lint:oxlint
+pnpm format
 ```
+
+## Structure
+
+The frontend follows a feature-oriented layout:
+
+- `src/app` - application entrypoints, router, shared styles, and top-level UI setup
+- `src/entities` - domain models and API access for courses, lessons, media, and users
+- `src/features` - focused user actions such as login and logout
+- `src/pages` - route-level views like auth, overview, course, and lesson
+- `src/widgets` - reusable composed UI blocks such as the app header
