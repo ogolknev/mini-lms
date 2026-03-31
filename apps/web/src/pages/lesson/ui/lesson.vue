@@ -50,40 +50,51 @@ onMounted(async () => {
     />
 
     <div class="space-y-5">
-      <div class="flex justify-between">
-        <h3 class="text-xl md:text-2xl">{{ lesson?.title }}</h3>
-        <ULink
-          class="text-neutral-500"
-          @click="$router.push(`/courses/${lesson?.course?.documentId}`)"
-          >ПЕРЕЙТИ К КУРСУ</ULink
-        >
-      </div>
-
-      <div v-if="lesson?.attachments">
-        <h4 class="text-lg md:text-xl mb-2">Материалы урока</h4>
-
-        <div class="space-y-2 ml-2">
-          <div v-for="attachment in lesson.attachments" :key="attachment.name" class="flex gap-2">
-            <UIcon :name="getIconFromMime(attachment.mime)" class="size-5 text-neutral-400"></UIcon>
-
-            <a
-              :href="getDownloadUrl(attachment)"
-              target="_blank"
-              download=""
-              class="text-neutral-300 text-sm"
-              >{{ attachment.name }}</a
+      <UCard variant="subtle">
+        <template #header>
+          <div class="flex justify-between">
+            <h3 class="text-2xl md:text-3xl font-bold">{{ lesson?.title }}</h3>
+            <ULink
+              class="text-neutral-500"
+              @click="$router.push(`/courses/${lesson?.course?.documentId}`)"
+              >ПЕРЕЙТИ К КУРСУ</ULink
             >
           </div>
-        </div>
-      </div>
+        </template>
 
-      <USeparator />
+        <template #default>
+          <p>{{ lesson?.description }}</p>
+        </template>
 
-      <p>{{ lesson?.description }}</p>
+        <template #footer v-if="lesson?.attachments">
+          <div class="space-y-2">
+            <div
+              v-for="attachment in lesson.attachments"
+              :key="attachment.name"
+              class="flex gap-2 group cursor-pointer w-fit"
+            >
+              <UIcon
+                :name="getIconFromMime(attachment.mime)"
+                class="size-5 text-neutral-500 group-hover:text-neutral-400"
+              ></UIcon>
 
-      <USeparator />
+              <a
+                :href="getDownloadUrl(attachment)"
+                target="_blank"
+                download=""
+                class="text-neutral-400 text-sm group-hover:text-neutral-300"
+                >{{ attachment.name }}</a
+              >
+            </div>
+          </div>
+        </template>
+      </UCard>
 
-      <div v-html="lessonContent" class="prose prose-neutral dark:prose-invert max-w-none"></div>
+      <div
+        v-if="lessonContent"
+        v-html="lessonContent"
+        class="prose prose-neutral dark:prose-invert max-w-none mt-15"
+      ></div>
     </div>
   </div>
 </template>
