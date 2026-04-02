@@ -88,7 +88,7 @@ onMounted(async () => {
 
     <USeparator />
 
-    <p v-if="!isLoading">{{ course?.description }}</p>
+    <p v-if="!isLoading" class="whitespace-pre-line">{{ course?.description }}</p>
     <USkeleton v-else class="w-full h-20" />
   </div>
   <UEmpty

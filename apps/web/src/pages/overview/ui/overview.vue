@@ -2,8 +2,9 @@
 import { CourseThumbnail, useCourseStore } from '@/entities/course'
 import { LessonThumbnail } from '@/entities/lesson'
 import { useLessonStore } from '@/entities/lesson'
+import type { Lesson } from '@/entities/lesson/model/interface'
 import { HTTPError } from '@/shared/api'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 const lessonStore = useLessonStore()
 const courseStore = useCourseStore()
@@ -11,6 +12,19 @@ const toast = useToast()
 
 const isLoading = ref(false)
 const isError = ref(false)
+
+const sortedLessons = computed(() =>
+  [...lessonStore.lessons].sort((a: Lesson, b: Lesson) => {
+    const courseA = a.course?.documentId ?? ''
+    const courseB = b.course?.documentId ?? ''
+
+    if (courseA !== courseB) {
+      return courseA.localeCompare(courseB)
+    }
+
+    return a.position - b.position
+  }),
+)
 
 onMounted(async () => {
   try {
@@ -49,8 +63,8 @@ onMounted(async () => {
 
       <template v-if="!isLoading">
         <UCarousel
-          v-if="lessonStore.lessons.length !== 0"
-          :items="lessonStore.lessons"
+          v-if="sortedLessons.length !== 0"
+          :items="sortedLessons"
           arrows
           prev-icon="lucide:chevron-left"
           next-icon="lucide:chevron-right"

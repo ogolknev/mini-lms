@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useLessonStore, type Lesson } from '@/entities/lesson'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import MarkdownIt from 'markdown-it'
 import DOMPurify from 'dompurify'
@@ -11,6 +11,22 @@ const toast = useToast()
 
 const lesson = ref<Lesson>()
 const lessonContent = ref('')
+
+const safeEmbed = computed(() => {
+  return DOMPurify.sanitize(lesson.value?.heroEmbed || '', {
+    ADD_TAGS: ['iframe'],
+    ADD_ATTR: [
+      'allow',
+      'allowfullscreen',
+      'frameborder',
+      'scrolling',
+      'src',
+      'title',
+      'width',
+      'height',
+    ],
+  })
+})
 
 const isLoading = ref(false)
 const isError = ref(false)
@@ -64,18 +80,25 @@ onMounted(async () => {
 
 <template>
   <div v-if="!isError" class="space-y-5">
-    <iframe
-      v-if="lesson?.heroSrcType === 'url' && !isLoading"
-      class="size-auto rounded-lg w-full aspect-video"
-      :src="lesson.heroUrl?.replace('video/private', 'play/embed')"
-      frameBorder="0"
-      allow="clipboard-write; autoplay"
-      webkitAllowFullScreen
-      mozallowfullscreen
-      allowFullScreen
-    />
+    <template v-if="!isLoading">
+      <iframe
+        v-if="lesson?.heroSrcType === 'url'"
+        class="size-auto rounded-lg w-full aspect-video"
+        :src="lesson.heroUrl?.replace('video/private', 'play/embed')"
+        frameBorder="0"
+        allow="clipboard-write; autoplay"
+        webkitAllowFullScreen
+        mozallowfullscreen
+        allowFullScreen
+      />
+      <div
+        v-else
+        v-html="safeEmbed"
+        class="size-auto rounded-lg w-full aspect-video *:size-full overflow-hidden"
+      />
+    </template>
 
-    <USkeleton v-else-if="isLoading" class="size-auto rounded-lg w-full aspect-video" />
+    <USkeleton v-else class="size-auto rounded-lg w-full aspect-video" />
 
     <div class="space-y-5">
       <UCard variant="subtle" v-if="!isLoading">
@@ -91,7 +114,7 @@ onMounted(async () => {
         </template>
 
         <template #default>
-          <p>{{ lesson?.description }}</p>
+          <p class="whitespace-pre-line">{{ lesson?.description }}</p>
         </template>
 
         <template #footer v-if="lesson?.attachments">
@@ -116,7 +139,7 @@ onMounted(async () => {
       <div
         v-if="lessonContent"
         v-html="lessonContent"
-        class="prose prose-neutral dark:prose-invert max-w-none mt-15"
+        class="prose prose-neutral dark:prose-invert max-w-none mt-15 pb-15"
       ></div>
     </div>
   </div>

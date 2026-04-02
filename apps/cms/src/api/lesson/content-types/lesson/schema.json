@@ -56,6 +56,20 @@
         }
       }
     },
+    "heroEmbed": {
+      "type": "text",
+      "private": true,
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "heroSrcType"
+            },
+            "embed"
+          ]
+        }
+      }
+    },
     "course": {
       "type": "relation",
       "relation": "manyToOne",
