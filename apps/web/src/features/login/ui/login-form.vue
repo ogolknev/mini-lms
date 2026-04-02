@@ -24,8 +24,12 @@ const state = ref<Schema>({
   password: '',
 })
 
+const loading = ref(false)
+
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   try {
+    loading.value = true
+
     await login(event.data)
 
     await profileStore.get({ clear: true })
@@ -42,6 +46,8 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         })
       }
     }
+  } finally {
+    loading.value = false
   }
 }
 </script>
@@ -67,7 +73,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     </UFormField>
 
     <div class="flex justify-end mt-4">
-      <UButton type="submit" label="Войти" />
+      <UButton type="submit" label="Войти" :loading="loading" />
     </div>
   </UForm>
 </template>
