@@ -31,13 +31,11 @@ export class APIClientAxios implements APIClient {
             router.push('/auth')
           }
 
-          console.dir(error.response)
           throw new HTTPError(
             error.response.statusText + ': ' + error.response.data.error.message,
             error.response,
           )
         } else if (error.request) {
-          console.dir(error.request)
           throw new HTTPError('No response: ' + error.message)
         }
       }
