@@ -9,17 +9,28 @@ export const useLessonStore = defineStore('lesson', () => {
   const lessons = computed(() => {
     return Array.from(lessonsMap.value.values())
   })
+  const isLoading = ref(false)
 
   async function update(lessons?: Lesson[], options?: { clear?: boolean }) {
-    if (options?.clear) {
-      lessonsMap.value.clear()
+    if (isLoading.value) {
+      return
     }
 
-    const lessonsToStore = lessons ?? (await getAccessibleLessons())
+    try {
+      isLoading.value = true
 
-    lessonsToStore.forEach((lesson) => {
-      lessonsMap.value.set(lesson.documentId, lesson)
-    })
+      if (options?.clear) {
+        lessonsMap.value.clear()
+      }
+
+      const lessonsToStore = lessons ?? (await getAccessibleLessons())
+
+      lessonsToStore.forEach((lesson) => {
+        lessonsMap.value.set(lesson.documentId, lesson)
+      })
+    } finally {
+      isLoading.value = false
+    }
   }
 
   async function get(id: string) {
@@ -28,6 +39,7 @@ export const useLessonStore = defineStore('lesson', () => {
 
   return {
     lessons,
+    isLoading,
     update,
     get,
   }

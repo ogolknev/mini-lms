@@ -9,17 +9,28 @@ export const useCourseStore = defineStore('course', () => {
   const courses = computed(() => {
     return Array.from(coursesMap.value.values())
   })
+  const isLoading = ref(false)
 
   async function update(courses?: Course[], options?: { clear?: boolean }) {
-    if (options?.clear) {
-      coursesMap.value.clear()
+    if (isLoading.value) {
+      return
     }
 
-    courses = courses ?? (await getAccessibleCourses())
+    try {
+      isLoading.value = true
 
-    courses.forEach((course) => {
-      coursesMap.value.set(course.documentId, course)
-    })
+      if (options?.clear) {
+        coursesMap.value.clear()
+      }
+
+      courses = courses ?? (await getAccessibleCourses())
+
+      courses.forEach((course) => {
+        coursesMap.value.set(course.documentId, course)
+      })
+    } finally {
+      isLoading.value = false
+    }
   }
 
   async function get(id: string) {
@@ -32,6 +43,7 @@ export const useCourseStore = defineStore('course', () => {
 
   return {
     courses,
+    isLoading,
     update,
     get,
   }
