@@ -20,5 +20,6 @@ onMounted(async () => {
     <UAvatar :src="preview ?? undefined" class="size-auto aspect-video w-full rounded-lg" />
 
     <h3 class="mt-1">{{ lesson.title }}</h3>
+    <span class="text-sm text-dimmed">{{ lesson.course?.title }}</span>
   </div>
 </template>

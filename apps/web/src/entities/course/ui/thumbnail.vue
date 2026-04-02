@@ -13,5 +13,6 @@ const baseApi = import.meta.env.VITE_API_BASE
     />
 
     <h3 class="mt-1">{{ course.title }}</h3>
+    <span class="text-sm text-dimmed">{{ course.lessons?.length }} уроков</span>
   </div>
 </template>

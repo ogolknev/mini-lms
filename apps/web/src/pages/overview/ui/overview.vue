@@ -2,75 +2,129 @@
 import { CourseThumbnail, useCourseStore } from '@/entities/course'
 import { LessonThumbnail } from '@/entities/lesson'
 import { useLessonStore } from '@/entities/lesson'
-import { onMounted } from 'vue'
+import { HTTPError } from '@/shared/api'
+import { onMounted, ref } from 'vue'
 
 const lessonStore = useLessonStore()
 const courseStore = useCourseStore()
+const toast = useToast()
+
+const isLoading = ref(false)
+const isError = ref(false)
 
 onMounted(async () => {
-  await lessonStore.update()
-  await courseStore.update()
-})
+  try {
+    isLoading.value = true
 
-function scrollHorizontally(event: Event) {
-  if (event instanceof WheelEvent) {
-    event.preventDefault()
+    await Promise.all([lessonStore.update(), courseStore.update()])
 
-    const target = event.currentTarget as HTMLElement
+    isError.value = false
+  } catch (error) {
+    console.error('Update failed', error)
 
-    target.scrollBy({
-      left: event.deltaY * 1.5,
-      behavior: 'smooth',
+    if (error instanceof HTTPError && error.response?.status === 403) {
+      return
+    }
+
+    const errorMessage = error instanceof Error ? error.message : String(error)
+
+    isError.value = true
+
+    toast.add({
+      color: 'error',
+      title: 'Не удалось загрузить ваши уроки и курсы. Попробуйте обновить страницу.',
+      description: errorMessage,
+      icon: 'lucide:triangle-alert',
     })
+  } finally {
+    isLoading.value = false
   }
-}
-
-function enableHorizontalScroll(event: MouseEvent) {
-  const container = event.target
-  container?.addEventListener('wheel', scrollHorizontally)
-}
-
-function disableHorizontalScroll(event: MouseEvent) {
-  const container = event.target
-  container?.removeEventListener('wheel', scrollHorizontally)
-}
+})
 </script>
 
 <template>
   <div>
     <div class="mb-5">
-      <h2 class="text-2xl font-bold mb-2">Ваши уроки</h2>
+      <h2 class="mb-2 text-2xl font-bold">Ваши уроки</h2>
 
-      <div
-        class="flex gap-4 overflow-auto p-2 scrollbar-hidden"
-        @mouseenter="enableHorizontalScroll"
-        @mouseleave="disableHorizontalScroll"
-      >
-        <LessonThumbnail
-          v-for="lesson in lessonStore.lessons"
-          :key="lesson.documentId"
-          :lesson
-          class="w-60 transition-transform hover:scale-105 cursor-pointer shrink-0"
-          @click="$router.push({ path: `/lessons/${lesson.documentId}` })"
+      <template v-if="!isLoading">
+        <UCarousel
+          v-if="lessonStore.lessons.length !== 0"
+          :items="lessonStore.lessons"
+          arrows
+          prev-icon="lucide:chevron-left"
+          next-icon="lucide:chevron-right"
+          skip-snaps
+          wheel-gestures
+          :ui="{
+            container: 'gap-2 p-4',
+            item: 'basis-60',
+            controls: 'justify-end mt-3',
+            arrows: '[&>button:disabled]:hidden',
+          }"
+        >
+          <template #default="{ item: lesson }">
+            <LessonThumbnail
+              :lesson
+              class="cursor-pointer transition-transform hover:scale-105"
+              @click="$router.push({ path: `/lessons/${lesson.documentId}` })"
+            />
+          </template>
+        </UCarousel>
+
+        <UEmpty
+          v-else
+          :title="isError ? 'Не удалось загрузить ваши уроки' : 'У вас нет доступных уроков'"
+          :description="isError ? 'Попробуйте обновить страницу' : ''"
+          :icon="isError ? 'lucide:triangle-alert' : 'lucide:frown'"
         />
+      </template>
+      <div v-else class="flex gap-4 overflow-hidden p-2">
+        <div v-for="_ of 5" :key="_" class="h-40 w-60 shrink-0 rounded-lg">
+          <USkeleton class="size-full" />
+        </div>
       </div>
     </div>
 
     <div>
-      <h2 class="text-2xl font-bold mb-2">Ваши курсы</h2>
+      <h2 class="mb-2 text-2xl font-bold">Ваши курсы</h2>
 
-      <div
-        class="flex gap-4 overflow-auto p-2 scrollbar-hidden"
-        @mouseenter="enableHorizontalScroll"
-        @mouseleave="disableHorizontalScroll"
-      >
-        <CourseThumbnail
-          v-for="course in courseStore.courses"
-          :key="course.documentId"
-          :course
-          class="w-80 transition-transform hover:scale-105 cursor-pointer shrink-0"
-          @click="$router.push({ path: `/courses/${course.documentId}` })"
+      <template v-if="!isLoading">
+        <UCarousel
+          v-if="courseStore.courses.length !== 0"
+          :items="courseStore.courses"
+          arrows
+          prev-icon="lucide:chevron-left"
+          next-icon="lucide:chevron-right"
+          skip-snaps
+          wheel-gestures
+          :ui="{
+            container: 'gap-2 p-4',
+            item: 'basis-80',
+            controls: 'justify-end mt-3',
+            arrows: '[&>button:disabled]:hidden',
+          }"
+        >
+          <template #default="{ item: course }">
+            <CourseThumbnail
+              :course
+              class="cursor-pointer transition-transform hover:scale-105"
+              @click="$router.push({ path: `/courses/${course.documentId}` })"
+            />
+          </template>
+        </UCarousel>
+
+        <UEmpty
+          v-else
+          :title="isError ? 'Не удалось загрузить ваши курсы' : 'Вы не зачислены ни на один курс'"
+          :description="isError ? 'Попробуйте обновить страницу' : ''"
+          :icon="isError ? 'lucide:triangle-alert' : 'lucide:frown'"
         />
+      </template>
+      <div v-else class="flex gap-4 overflow-hidden p-2">
+        <div v-for="_ of 5" :key="_" class="h-40 w-80 shrink-0 rounded-lg">
+          <USkeleton class="size-full" />
+        </div>
       </div>
     </div>
   </div>
