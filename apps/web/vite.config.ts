@@ -12,7 +12,7 @@ export default defineConfig(({ mode }) => ({
     ui({
       ui: {
         colors: {
-          primary: 'yellow',
+          primary: 'indigo',
           neutral: 'neutral',
         },
         input: {
@@ -42,13 +42,10 @@ export default defineConfig(({ mode }) => ({
   build: {
     rollupOptions: {
       output: {
-        advancedChunks: {
-          groups: [
-            {
-              name: 'vendor',
-              test: /node_modules/,
-            },
-          ],
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            return 'vendor'
+          }
         },
       },
     },
