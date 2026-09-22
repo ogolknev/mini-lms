@@ -13,4 +13,4 @@ app.use(pinia)
 app.use(router)
 app.use(ui)
 
-app.mount('#app')
+router.isReady().then(() => app.mount('#app'))

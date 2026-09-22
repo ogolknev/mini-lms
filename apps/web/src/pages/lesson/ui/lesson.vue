@@ -1,10 +1,12 @@
 <script setup lang="ts">
+import { useToast } from '@nuxt/ui/composables'
 import { useLessonStore, type Lesson } from '@/entities/lesson'
 import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import MarkdownIt from 'markdown-it'
 import DOMPurify from 'dompurify'
 
+const isDemo = import.meta.env.VITE_DEMO === 'true'
 const lessonStore = useLessonStore()
 const route = useRoute()
 const toast = useToast()
@@ -81,8 +83,18 @@ onMounted(async () => {
 <template>
   <div v-if="!isError" class="space-y-5">
     <template v-if="!isLoading">
+      <video
+        v-if="lesson?.heroSrcType === 'demo-video' && isDemo"
+        :src="lesson.heroUrl"
+        :poster="lesson.preview?.url"
+        controls
+        playsinline
+        preload="metadata"
+        class="rounded-lg w-full aspect-video"
+        aria-label="Демонстрационное видео урока"
+      />
       <iframe
-        v-if="lesson?.heroSrcType === 'url'"
+        v-else-if="lesson?.heroSrcType === 'url'"
         class="size-auto rounded-lg w-full aspect-video"
         :src="lesson.heroUrl?.replace('video/private', 'play/embed')"
         frameBorder="0"

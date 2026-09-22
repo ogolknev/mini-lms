@@ -13,7 +13,10 @@
     "lint:oxlint": "oxlint . --fix -D correctness --ignore-path .gitignore",
     "lint:eslint": "eslint . --fix",
     "lint": "run-s lint:*",
-    "format": "prettier --write src/"
+    "format": "prettier --write src/",
+    "build:demo": "vue-tsc --build && vite build --mode demo",
+    "dev:demo": "vite --mode demo",
+    "test:demo": "vitest run --config vitest.demo.config.ts"
   },
   "dependencies": {
     "@nuxt/ui": "^4.6.0",
