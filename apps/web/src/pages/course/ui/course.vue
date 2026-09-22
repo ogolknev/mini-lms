@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useToast } from '@nuxt/ui/composables'
 import { useCourseStore, type Course } from '@/entities/course'
 import { LessonThumbnail } from '@/entities/lesson'
 import { HTTPError } from '@/shared/api'

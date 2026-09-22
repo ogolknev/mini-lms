@@ -1,5 +1,31 @@
 # mini-lms
 
+## Портфолио: кабинет онлайн-школы
+
+Ученик входит в личный кабинет, видит назначенные курсы, смотрит видеоуроки и скачивает материалы. Контент и доступы управляются через Strapi. Стек: Vue 3, TypeScript, Pinia, Strapi.
+
+**Демонстрация интерфейса:** отдельная сборка с вымышленным курсом «Адаптивная вёрстка». Вход в один клик, три урока, тестовое видео и чек-лист. Она показывает пользовательский сценарий без подключения к клиентскому серверу. Данные хранятся в памяти, сеанс — в текущей вкладке. Это не демонстрация серверной защиты или панели администратора.
+
+### Запуск демо
+
+```sh
+corepack pnpm install --frozen-lockfile
+corepack pnpm dev:demo
+```
+
+Откройте `/mini-lms/` на адресе, который напечатает Vite, и нажмите «Открыть демо». Форма уже заполнена публичными тестовыми значениями `demo` / `demo`; реальные данные вводить не нужно.
+
+```sh
+corepack pnpm test:demo
+corepack pnpm build:demo
+```
+
+Готовые файлы — `apps/web/dist`. Сборка использует hash-маршруты: прямые ссылки на уроки работают на статическом хостинге. Для другого пути задайте `VITE_BASE_PATH` при сборке. `.env.demo` содержит только публичные настройки. Обычная сборка по-прежнему использует Strapi API; деморежим включается только через `VITE_DEMO=true`.
+
+Подробнее о размещении и границах проверки: [docs/portfolio-demo.md](docs/portfolio-demo.md).
+
+---
+
 `mini-lms` is a small authenticated learning platform for assigned-course access and lesson delivery. Learners sign in, see only the content available to them, open courses, and consume lessons with video, rich text, previews, and downloadable attachments.
 
 The repository is a `pnpm` monorepo with a learner-facing Vue application in `apps/web` and a Strapi backend in `apps/cms`. Together they cover the full flow from content management and enrollment rules to protected content delivery in the frontend.

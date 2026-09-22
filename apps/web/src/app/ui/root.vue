@@ -6,7 +6,7 @@ import { AppHeader } from '@/widgets/app-header'
   <UApp>
     <div class="h-dvh w-dvw grid grid-rows-[auto_minmax(0,1fr)]">
       <AppHeader />
-      <main class="size-full w-8/10 max-w-280 mx-auto mt-10">
+      <main class="w-full min-w-0 max-w-280 mx-auto px-4 sm:px-8 mt-8 pb-10">
         <RouterView />
       </main>
     </div>

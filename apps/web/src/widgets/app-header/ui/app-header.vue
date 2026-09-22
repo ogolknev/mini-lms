@@ -5,12 +5,14 @@ import BrandIconWithText from '@/shared/assets/brand-icon-with-text.vue'
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
+const isDemo = import.meta.env.VITE_DEMO === 'true'
 const profileStore = useProfileStore()
 const router = useRouter()
 
 const openProfilePopover = ref(false)
 
 onMounted(async () => {
+  if (isDemo && router.currentRoute.value.path === '/auth') return
   try {
     await profileStore.get({ clear: true })
   } catch {
@@ -33,6 +35,7 @@ function onLogout() {
     </template>
 
     <template #right>
+      <UBadge v-if="isDemo" label="Демо" variant="subtle" />
       <UColorModeButton />
 
       <UPopover
@@ -47,7 +50,7 @@ function onLogout() {
           align: 'end',
         }"
       >
-        <UButton icon="lucide:user" color="neutral" variant="subtle" />
+        <UButton icon="lucide:user" aria-label="Профиль ученика" color="neutral" variant="subtle" />
 
         <template #content>
           <div class="p-5 flex flex-col gap-5">
