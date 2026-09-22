@@ -29,7 +29,7 @@ function onLogout() {
 </script>
 
 <template>
-  <UHeader :toggle="false">
+  <UHeader title="Mini LMS — главная" :toggle="false">
     <template #title>
       <BrandIconWithText class="h-10" />
     </template>

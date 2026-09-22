@@ -135,6 +135,7 @@ onMounted(async () => {
               v-for="attachment in lesson.attachments"
               :key="attachment.name"
               :href="getDownloadUrl(attachment)"
+              external
               target="_blank"
               download=""
               variant="link"
